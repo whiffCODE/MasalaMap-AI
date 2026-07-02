@@ -1,0 +1,17 @@
+node_modules
+
+.env
+
+.env.*
+
+.next
+
+coverage
+
+logs
+
+uploads
+
+dist
+
+build
