@@ -1,16 +1,14 @@
 import express from "express";
-
 import helmet from "helmet";
-
 import cors from "cors";
-
 import compression from "compression";
-
 import cookieParser from "cookie-parser";
-
 import morgan from "morgan";
 
 import routes from "./routes/index.js";
+
+import notFound from "./middlewares/notFound.middleware.js";
+import errorHandler from "./middlewares/error.middleware.js";
 
 const app = express();
 
@@ -18,9 +16,9 @@ app.use(helmet());
 
 app.use(cors({
 
-    origin:process.env.CLIENT_URL,
+    origin: process.env.CLIENT_URL,
 
-    credentials:true
+    credentials: true
 
 }));
 
@@ -30,7 +28,7 @@ app.use(express.json());
 
 app.use(express.urlencoded({
 
-    extended:true
+    extended: true
 
 }));
 
@@ -38,12 +36,22 @@ app.use(cookieParser());
 
 app.use(morgan("dev"));
 
-app.use(
+app.use("/api/v1", routes);
 
-    "/api/v1",
+/*
+|--------------------------------------------------------------------------
+| 404 Middleware
+|--------------------------------------------------------------------------
+*/
 
-    routes
+app.use(notFound);
 
-);
+/*
+|--------------------------------------------------------------------------
+| Global Error Middleware
+|--------------------------------------------------------------------------
+*/
+
+app.use(errorHandler);
 
 export default app;
