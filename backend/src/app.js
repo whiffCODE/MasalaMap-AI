@@ -9,6 +9,8 @@ import routes from "./routes/index.js";
 
 import notFound from "./middlewares/notFound.middleware.js";
 import errorHandler from "./middlewares/error.middleware.js";
+import requestId from "./middlewares/requestId.middleware.js";
+import requestLogger from "./middlewares/requestLogger.middleware.js";
 
 const app = express();
 
@@ -33,6 +35,10 @@ app.use(express.urlencoded({
 }));
 
 app.use(cookieParser());
+
+app.use(requestId);
+
+app.use(requestLogger);
 
 app.use(morgan("dev"));
 

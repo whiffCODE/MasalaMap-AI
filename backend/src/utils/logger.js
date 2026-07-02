@@ -1,40 +1,51 @@
+import fs from "fs";
+import path from "path";
 import winston from "winston";
+
+const logDirectory = path.join(process.cwd(), "src", "logs");
+
+if (!fs.existsSync(logDirectory))
+{
+    fs.mkdirSync(logDirectory, { recursive: true });
+}
 
 const logger = winston.createLogger({
 
-    level:"info",
+    level: "info",
 
-    format:winston.format.combine(
+    format: winston.format.combine(
 
         winston.format.timestamp(),
 
-        winston.format.printf(
+        winston.format.errors({
 
-            ({timestamp,level,message})=>{
+            stack: true
 
-                return `${timestamp} ${level.toUpperCase()} : ${message}`;
+        }),
 
-            }
+        winston.format.printf(info => {
 
-        )
+            return `${info.timestamp} ${info.level.toUpperCase()} ${info.message}`;
+
+        })
 
     ),
 
-    transports:[
+    transports: [
 
         new winston.transports.Console(),
 
         new winston.transports.File({
 
-            filename:"src/logs/error.log",
+            filename: path.join(logDirectory, "error.log"),
 
-            level:"error"
+            level: "error"
 
         }),
 
         new winston.transports.File({
 
-            filename:"src/logs/combined.log"
+            filename: path.join(logDirectory, "combined.log")
 
         })
 
