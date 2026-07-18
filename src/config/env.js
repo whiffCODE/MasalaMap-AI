@@ -1,23 +1,28 @@
 import dotenv from "dotenv";
+import { cleanEnv, str, port } from "envalid";
 
 dotenv.config();
 
-export const env = {
+export const env = cleanEnv(process.env, {
+    PORT: port({
+        default: 5000
+    }),
 
-    port: process.env.PORT || 5000,
+    NODE_ENV: str({
+        default: "development"
+    }),
 
-    nodeEnv: process.env.NODE_ENV,
+    MONGODB_URI: str(),
 
-    mongodbUri: process.env.MONGODB_URI,
+    JWT_SECRET: str(),
 
-    jwtSecret: process.env.JWT_SECRET,
+    JWT_REFRESH_SECRET: str(),
 
-    jwtRefreshSecret: process.env.JWT_REFRESH_SECRET,
+    EMAIL_USER: str(),
 
-    emailUser: process.env.EMAIL_USER,
+    EMAIL_PASSWORD: str(),
 
-    emailPassword: process.env.EMAIL_PASSWORD,
-
-    clientUrl: process.env.CLIENT_URL
-
-};
+    CLIENT_URL: str({
+        default: "http://localhost:3000"
+    })
+});

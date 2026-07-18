@@ -6,14 +6,14 @@ const startServer = async () => {
 
     await connectDB();
 
-    app.listen(env.port, () => {
+    app.listen(env.PORT, () => {
 
         console.log(`
 ====================================
 🚀 MasalaMap Backend Started
 ====================================
-PORT : ${env.port}
-MODE : ${env.nodeEnv}
+PORT : ${env.PORT}
+MODE : ${env.NODE_ENV}
 ====================================
 `);
 
